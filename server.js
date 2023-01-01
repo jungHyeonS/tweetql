@@ -17,6 +17,12 @@ const typeDefs = gql`
         allTweets: [Tweet]
         tweet(id: ID): Tweet
     }
+
+    # user가 데이터를 mutation(변형)하는 type (rest 에 POST)
+    type Mutation{
+        postTweet(text:String,userId:ID): Tweet,
+        deleteTweet(id:ID):Boolean
+    }
 `
 
 const server = new ApolloServer({typeDefs})
