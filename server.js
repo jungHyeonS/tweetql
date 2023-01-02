@@ -12,14 +12,27 @@ let tweets = [
     }
 ]
 
+let users = [
+    {
+        id : '1',
+        firstName : "nico",
+        lastName : 'aaa'
+    },
+    {
+        id:"2",
+        firstName : "abc",
+        lastName : "abc"
+    }
+]
+
 //클라이언트가 쿼리를 조회할수있는 데이터 구조를 정의
 //Scalar types : String,int 와 같은 내장 타입
 const typeDefs = gql`
     type User{
         id:ID!,
-        username:String!
         firstName:String!
         lastName:String!
+        fullName:String!
     }
     type Tweet{
         id:ID!
@@ -27,6 +40,7 @@ const typeDefs = gql`
         author:User
     }
     type Query{
+        allUsers: [User!]!
         allTweets: [Tweet]
         tweet(id: ID!): Tweet,
         ping:String
@@ -50,6 +64,9 @@ const resolvers = {
         },
         allTweets(){
             return tweets
+        },
+        allUsers(){
+            return users
         }
     },
     Mutation:{
@@ -66,6 +83,14 @@ const resolvers = {
             if(!tweet) return false;
             tweets = tweets.filter(tweet => tweet.id !== id)
             return true;
+        }
+    },
+
+    //user 데이터의 fullName 필드가 없다면 아래 fullName 함수가 호출된다
+    User:{
+        //다이나믹 필드
+        fullName({firstName,lastName}){
+            return `${firstName} ${lastName}`
         }
     }
 }
