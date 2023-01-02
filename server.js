@@ -5,10 +5,12 @@ let tweets = [
     {
         id:"1",
         text:"heelo",
+        userId :"2"
     },
     {
         id:"2",
         text:"heelo111",
+        userId : "1"
     }
 ]
 
@@ -71,6 +73,12 @@ const resolvers = {
     },
     Mutation:{
         postTweet(_,{text,userId}){
+            const isUser = users.findIndex(user => user.id === userId);
+            // console.log(isUser);
+            if(isUser == -1){
+                throw new Error("id must be non-negative");
+            }
+
             const newTweet = {
                 id : tweets.length + 1,
                 text,
@@ -91,6 +99,11 @@ const resolvers = {
         //다이나믹 필드
         fullName({firstName,lastName}){
             return `${firstName} ${lastName}`
+        }
+    },
+    Tweet:{
+        author({userId}){
+            return users.find(user => user.id === userId)
         }
     }
 }
