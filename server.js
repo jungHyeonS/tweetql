@@ -104,7 +104,8 @@ const resolvers = {
             return fetch("https://yts.mx/api/v2/list_movies.json").then(response => response.json()).then(json => json.data.movies);
         },
         movie(_,{id}){
-            return fetch(`https://yts.mx/api/v2/list_movies.json?movie_id=${id}`).then(response => response.json()).then(json => json.data.movie);
+          const result = fetch(`https://yts.torrentbay.to/api/v2/movie_details.json?movie_id=${id}`).then(response => response.json()).then(json => json.data.movie);
+          return result
         }
     },
     Mutation:{
